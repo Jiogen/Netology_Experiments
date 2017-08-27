@@ -1,2 +1,2 @@
 'use strict';
-console.log('Just test for git');
+console.log('Just test for git!');

@@ -95,7 +95,6 @@ class Level {
           return this.actors.find(function(item) {
             return item.isIntersect(obj) ? obj : '';
           });
-          this.actors.find(item => item.isIntersect(obj));
         }
         if (this.height === 0 && this.width === 0) {
           return undefined;
@@ -143,7 +142,7 @@ class Level {
       if (!this.actors) {return true;}
         this.actors.forEach(function(element) {
       
-      if (element.type === type) {find++};
+      if (element.type === type) {find++}
     });
 
     if (find > 0) {return false;}
@@ -186,7 +185,7 @@ class LevelParser  {
   createGrid(plan) {
     const resultArray = [];
 
-    if (plan.length != 0) {
+    if (plan.length !== 0) {
       plan.map(function(line, y) {
         resultArray.push([]);
         for (let element of line) {
@@ -238,12 +237,12 @@ class Fireball extends Actor {
     super(location);
     this.speed = speed;
   }
-  get type() {return 'fireball'};
+  get type() {return 'fireball'}
   getNextPosition(time) {
     const supObj = {};
 
     if (this.speed.x === 0 && this.speed.y === 0) {return this.pos;}
-    
+
     if (time) {
       supObj.x = this.pos.x + (this.speed.x * time);
       supObj.y = this.pos.y + (this.speed.y * time);
@@ -272,4 +271,16 @@ class Fireball extends Actor {
   }
 }
 
+class Coin extends Actor {
+  constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
+    super(pos, size, speed);
+
+    this.size = new Vector(0.6, 0.6);
+    this.pos = this.pos.plus(new Vector(0.2, 0.1));
+    this.springSpeed = 8;
+    this.springDist = 0.07;
+    this.spring = Math.random() * (2 * Math.PI);
+    this.mainPosition = new Vector(this.pos.x, this.pos.y);
+  }
+}
 

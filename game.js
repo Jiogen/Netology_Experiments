@@ -282,5 +282,34 @@ class Coin extends Actor {
     this.spring = Math.random() * (2 * Math.PI);
     this.mainPosition = new Vector(this.pos.x, this.pos.y);
   }
+
+  get type() {return 'coin'}
+
+  updateSpring(time) {
+    if(time) {
+      this.spring += this.springSpeed * time;
+    } else {
+      this.spring += this.springSpeed;
+    }
+  }
+  getSpringVector() {
+    return new Vector(0, Math.sin(this.spring) * this.springDist);
+  }
+  getNextPosition(time = 1) {
+    this.updateSpring(time);
+    return this.mainPosition.plus(this.getSpringVector());
+  }
+  act(time) {
+    this.pos = this.getNextPosition(time);
+  }
 }
 
+class Player extends Actor {
+  constructor(pos = new Vector(0, 0)) {
+    super(pos);
+    this.pos = this.pos.plus(new Vector(0, -0.5));
+    this.size = new Vector(0.8, 1.5);
+    this.speed = new Vector(0,0);
+  }
+  get type() {return 'player'}
+}

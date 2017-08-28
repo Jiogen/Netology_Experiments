@@ -38,7 +38,7 @@ class Actor {
   act() {}
 
   isIntersect(obj) {
-    
+
     if (this == obj) {return false;}
 
     if ((obj.size.x < 0 && obj.size.y < 0) ||
@@ -54,4 +54,57 @@ class Actor {
               return true;
             }
   }
+}
+
+class Level {
+  constructor(grid, actorsArray) {
+    let height = 0, width = 0, player = '';
+
+      if (grid instanceof Array) {
+      height = grid.length;
+      grid.forEach(function(element) {
+        !element ? width = 0 : element instanceof Array ? width = element.length > width ? element.length : width : width = element.length;
+        });
+      }
+      if (actorsArray instanceof Array) {
+        player = actorsArray.find(function(element) {
+          if(element.type === 'player') { 
+            return element}
+          });
+        }
+
+        this.grid = grid;
+        this.actors = actorsArray;
+        this.player = player;
+        this.height = height;
+        this.width = width;
+        this.status = null;
+        this.finishDelay = 1;
+
+      }
+
+      isFinished() {
+        if (this.finishDelay < 0 && this.status !== null) {return true}
+        if (this.finishDelay > 0 && this.status !== null) {return false}
+        return false;
+      }
+
+      actorAt(obj) {
+        checkType(obj, Actor);
+        if (this.actors) {
+          return this.actors.find(function(item) {
+            return item.isIntersect(obj) ? obj : '';
+          });
+          this.actors.find(item => item.isIntersect(obj));
+        }
+        if (this.height === 0 && this.width === 0) {
+          return undefined;
+        }
+        if (this.actors.length === 1) {
+          return undefined;
+        }
+        if (obj.pos.y > this.height && obj.pos.x > this.width) {
+          return undefined;
+        }
+      }
 }

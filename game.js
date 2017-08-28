@@ -38,6 +38,7 @@ class Actor {
   act() {}
 
   isIntersect(obj) {
+    
     if (this == obj) {return false;}
 
     if ((obj.size.x < 0 && obj.size.y < 0) ||

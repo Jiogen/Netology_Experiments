@@ -233,4 +233,43 @@ class LevelParser  {
   }
 }
 
+class Fireball extends Actor {
+  constructor(location, speed = new Vector(0, 0)) {
+    super(location);
+    this.speed = speed;
+  }
+  get type() {return 'fireball'};
+  getNextPosition(time) {
+    const supObj = {};
+
+    if (this.speed.x === 0 && this.speed.y === 0) {return this.pos;}
+    
+    if (time) {
+      supObj.x = this.pos.x + (this.speed.x * time);
+      supObj.y = this.pos.y + (this.speed.y * time);
+
+      return new Vector(supObj.x, supObj.y);
+    } else {
+      supObj.x = this.pos.x + this.speed.x;
+      supObj.y = this.pos.y + this.speed.y;
+
+      return new Vector(supObj.x, supObj.y);
+    }
+  }
+  handleObstacle() {
+    this.speed.x *= -1;
+    this.speed.y *= -1;
+  }
+  act(time, level) {
+    const newPosition = this.getNextPosition(time);
+
+    if (level.obstacleAt(new Vector(newPosition.x, newPosition.y), this.size)) {
+      this.handleObstacle();
+    } else {
+      this.pos.x = newPosition.x;
+      this.pos.y = newPosition.y;
+    }
+  }
+}
+
 

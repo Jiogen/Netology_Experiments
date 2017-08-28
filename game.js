@@ -107,4 +107,56 @@ class Level {
           return undefined;
         }
       }
-}
+      obstacleAt(location, size) {
+
+        if (location.y + size.y > this.height) {return 'lava'}
+        if (location.x + size.x > this.width) {return 'wall'}
+        if (location.x < 0 || location.y < 0) {return 'wall'}
+        
+        let posY = Math.floor(location.y),
+        posySizey = (location.y + size.y),
+        posX = Math.floor(location.x),
+        posxSizex = (location.x + size.x);
+
+      for(let y = posY; y <= posySizey; y++) {
+      for(let x = posX; x <= posxSizex; x++) {
+
+        if(x + 1 == posxSizex && this.grid[y][x + 1] == 'lava') {
+          return this.grid[y][x + 1];
+        }
+        if (y < posySizey && x < posxSizex && this.grid[y][x] !== undefined) {
+          return this.grid[y][x];
+        }
+      }
+    }
+  }
+    removeActor(deleteActor) {
+      let deleteIndex = this.actors.indexOf(deleteActor);
+
+      if(deleteIndex != -1) {
+        this.actors.splice(deleteIndex, 1);
+      }
+    }
+    noMoreActors(type) {
+      let find = 0;
+
+      if (!this.actors) {return true;}
+        this.actors.forEach(function(element) {
+      
+      if (element.type == type) {find++};
+    });
+
+    if (find > 0) {return false;}
+    return true;
+  }
+    playerTouched(type) {
+      if (type === 'coin') {this.removeActor(arguments[1])}
+      if (type === 'lava' || type === 'fireball') {return this.status = 'lost'};
+
+      let coinCount = this.actors.reduce(function(count, element) {
+        return element.type ==='coin' ? count += 1 : count;
+    }, 0);
+      if (coinCount === 0 && this.status != 'lost') {
+        return this.status = 'won'}
+  }
+}//LEVEL

@@ -24,7 +24,7 @@ class Vector {
 }
 
 class Actor {
-  consturctor(location = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
+  constructor(location = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
     this.pos = checkType(location, Vector);
     this.size = checkType(size, Vector);
     this.speed = checkType(speed, Vector);
@@ -41,7 +41,7 @@ class Actor {
     if (this == obj) {return false;}
 
     if ((obj.size.x < 0 && obj.size.y < 0) ||
-          (( this.bottom <= obj,top ) ||
+          (( this.bottom <= obj.top ) ||
             ( this.top >= obj.bottom) ||
             ( this.left >= obj.right) ||
             ( this.right <= obj.left))) {

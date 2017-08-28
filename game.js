@@ -28,6 +28,7 @@ class Actor {
     this.pos = checkType(location, Vector);
     this.size = checkType(size, Vector);
     this.speed = checkType(speed, Vector);
+    this.defaultPosition = new Vector(location.x, location.y);
   } 
   get left() {return this.pos.x}
   get right() {return this.pos.x + this.size.x}
@@ -271,6 +272,37 @@ class Fireball extends Actor {
   }
 }
 
+class HorizontalFireball extends Fireball {
+  constructor(pos) {
+    super(pos);
+
+    this.size = new Vector(1,1);
+    this.speed = new Vector(2, 0);
+  }
+}
+
+class VerticalFireball extends Fireball {
+  constructor(pos) {
+    super(pos);
+
+    this.size = new Vector(1,1);
+    this.speed = new Vector(0, 2);
+  }
+}
+
+class FireRain extends Fireball {
+  constructor(pos) {
+    super(pos);
+
+    this.size = new Vector(1,1);
+    this.speed = new Vector(0, 3);
+  }
+  handleObstacle() {
+    this.pos.x = this.defaultPosition.x;
+    this.pos.y = this.defaultPosition.y;
+  }
+}
+
 class Coin extends Actor {
   constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
     super(pos, size, speed);
@@ -313,3 +345,39 @@ class Player extends Actor {
   }
   get type() {return 'player'}
 }
+
+const schemas = [
+  [
+    '   xxx   ',
+    '   v v   ',
+    'C       C',
+    'x       x',
+    '    P    ',
+    '    x    ',
+    '  x   x  ',
+    'C       C',
+    'x xxxx xx'
+  ],
+   [
+    '         ',
+    ' C       ',
+    'xxxxxxxx ',
+    '         ',
+    '-       C',
+    'xxxx x xx',
+    '         ',
+    'P        ',
+    'x xxxx xx'
+  ]
+];
+const actorDict = {
+  'P': Player,
+  'v': FireRain,
+  '-': HorizontalFireball,
+  '!': VerticalFireball,
+  'C': Coin
+}
+
+const parser = new LevelParser(actorDict);
+runGame(schemas, parser, DOMDisplay)
+  .then(() => alert('Congratulations you won!'));

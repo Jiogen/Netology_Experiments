@@ -113,7 +113,7 @@ class Level {
         if (location.x + size.x > this.width) {return 'wall'}
         if (location.x < 0 || location.y < 0) {return 'wall'}
         
-        let posY = Math.floor(location.y),
+        const posY = Math.floor(location.y),
         posySizey = (location.y + size.y),
         posX = Math.floor(location.x),
         posxSizex = (location.x + size.x);
@@ -131,7 +131,7 @@ class Level {
     }
   }
     removeActor(deleteActor) {
-      let deleteIndex = this.actors.indexOf(deleteActor);
+      const deleteIndex = this.actors.indexOf(deleteActor);
 
       if(deleteIndex != -1) {
         this.actors.splice(deleteIndex, 1);
@@ -143,7 +143,7 @@ class Level {
       if (!this.actors) {return true;}
         this.actors.forEach(function(element) {
       
-      if (element.type == type) {find++};
+      if (element.type === type) {find++};
     });
 
     if (find > 0) {return false;}
@@ -159,4 +159,78 @@ class Level {
       if (coinCount === 0 && this.status != 'lost') {
         return this.status = 'won'}
   }
-}//LEVEL
+}
+
+class LevelParser  {
+  constructor (data) {
+    this.data = data;
+  }
+
+  actorFromSymbol(symbol) {
+    if (!symbol) {
+      return undefined;
+    } else {
+      for (let key in this.data) {
+        if (key == symbol) {return this.data[key]}
+      }
+    }
+  }
+
+  obstacleFromSymbol(symbol) {
+    if (!symbol) {return undefined;}
+    if (symbol === 'x') {return 'wall'}
+    if (symbol === '!') {return 'lava'}
+
+    else {return undefined;}
+  }
+  createGrid(plan) {
+    const resultArray = [];
+
+    if (plan.length != 0) {
+      plan.map(function(line, y) {
+        resultArray.push([]);
+        for (let element of line) {
+          if (element === 'x') {
+            resultArray[y].push('wall');
+          } else if (element === '!') {
+            resultArray[y].push('lava');
+          } else {
+            resultArray[y].push(undefined);
+          }
+        }
+      });
+    }
+    return resultArray;
+  }
+  createActors(plan) {
+    const data = this.data;
+    const resultArray = [];
+
+    if (plan.length === 0) {
+    } else {
+      plan.forEach(function(item, i) {
+        for (let q = 0; q < item.length; q++) {
+          for (let key in data) {
+            if (item[q] === key) {
+              if (typeof data[key] === 'function') {
+                let newActor = new data[item[q]](new Vector(q,i));
+                if (newActor instanceof Actor) {
+                  resultArray.push(newActor);
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    return resultArray;
+  }
+  parse(plan) {
+    let level = new Level(plan, this.createActors(plan));
+    level.grid = this.createGrid(level.grid);
+
+    return level;
+  }
+}
+
+

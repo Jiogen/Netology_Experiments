@@ -26,6 +26,8 @@ const playerXSpeed = 7;
 const gravity = 30;
 const jumpSpeed = 17;
 
+var playerHealth = 3;
+
 function elt(name, className) {
   var elt = document.createElement(name);
   if (className) elt.className = className;
@@ -255,8 +257,12 @@ function runGame(plans, Parser, Display) {
       runLevel(Parser.parse(plans[n]), Display)
         .then(status => {
           if (status == "lost") {
-            alert('You are defeated! Try it again!');
+            playerHealth -= 1;
+            alert(`You are defeated! Try it again! Health Left : ${playerHealth}`);
             startLevel(n);
+          if (playerHealth === 0 || playerHealth <= 0) {
+              alert(`You are dead! Bye Bye ! Health left : ${playerHealth}`);
+              location.reload();            }
           } else if (n < plans.length - 1) {
             startLevel(n + 1);
           } else {

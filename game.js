@@ -349,14 +349,14 @@ class Player extends Actor {
 const schemas = [
   [
     '   xxx   ',
-    '   v v   ',
+    '   I v   ',
     'C       C',
     'x       x',
     '    P    ',
     '    x    ',
     '  x   x  ',
     'C       C',
-    'x xxxx xx'
+    'x!xxxx!xx'
   ],
    [
     '         ',
@@ -365,16 +365,16 @@ const schemas = [
     '         ',
     '-       C',
     'xxxx x xx',
-    '         ',
+    '        I',
     'P        ',
-    'x xxxx xx'
+    'x!xxxx!xx'
   ]
 ];
 const actorDict = {
   'P': Player,
   'v': FireRain,
   '-': HorizontalFireball,
-  '!': VerticalFireball,
+  'I': VerticalFireball,
   'C': Coin
 }
 

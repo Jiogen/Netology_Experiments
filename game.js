@@ -1,5 +1,6 @@
 'use strict';
 
+
 // Function for check types of arguments in some functions...
 function checkType(element, checkedType) {
   if (!(element instanceof checkedType)) {

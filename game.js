@@ -59,30 +59,14 @@ class Actor {
 }
 
 class Level {
-  constructor(grid, actorsArray) {
-    let height = 0, width = 0, player = '';
-
-      if (grid instanceof Array) {
-      height = grid.length;
-      grid.forEach(function(element) {
-        !element ? width = 0 : element instanceof Array ? width = element.length > width ? element.length : width : width = element.length;
-        });
-      }
-      if (actorsArray instanceof Array) {
-        player = actorsArray.find(function(element) {
-          if(element.type === 'player') { 
-            return element}
-          });
-        }
-
-        this.grid = grid;
-        this.actors = actorsArray;
-        this.player = player;
-        this.height = height;
-        this.width = width;
-        this.status = null;
-        this.finishDelay = 1;
-
+  constructor(grid = [], actorsArray = []) {
+    this.grid = grid;
+    this.actors = actorsArray;
+    this.height = grid.length;
+    this.width = grid.reduce((acc, el) => el.length > acc ? el.length : acc, 0);
+    this.finishDelay = 1;
+    this.player = actorsArray.find(el => el.type === 'player');
+    this.status = null;
       }
 
       isFinished() {

@@ -180,22 +180,23 @@ class LevelParser  {
   createActors(plan) {
     const data = this.data;
     const resultArray = [];
-
-    if (plan.length === 0) {
+    const planz = plan.map(str => str.split(''));
+    
+    if (planz.length === 0) {
     } else {
-      plan.forEach(function(item, i) {
-        for (let q = 0; q < item.length; q++) {
+      planz.forEach(function(item, y) {
+        item.forEach(function(itemz, x) {
           for (let key in data) {
-            if (item[q] === key) {
+            if (itemz === key) {
               if (typeof data[key] === 'function') {
-                let newActor = new data[item[q]](new Vector(q,i));
+                let newActor = new data[itemz](new Vector(x,y));
                 if (newActor instanceof Actor) {
                   resultArray.push(newActor);
                 }
               }
             }
           }
-        }
+        });
       });
     }
     return resultArray;

@@ -169,23 +169,13 @@ class LevelParser  {
     else {return undefined;}
   }
   createGrid(plan) {
-    const resultArray = [];
-
-    if (plan.length !== 0) {
-      plan.map(function(line, y) {
-        resultArray.push([]);
-        for (let element of line) {
-          if (element === 'x') {
-            resultArray[y].push('wall');
-          } else if (element === '!') {
-            resultArray[y].push('lava');
-          } else {
-            resultArray[y].push(undefined);
-          }
-        }
-      });
-    }
-    return resultArray;
+    return plan.map(strg => strg.split('').map(el => {
+      if(el === '!') {
+        return 'lava';
+      } else if (el === 'x') {
+        return 'wall';
+      }
+    }));
   }
   createActors(plan) {
     const data = this.data;
